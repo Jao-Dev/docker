@@ -1,7 +1,7 @@
 services:
   rabbitmq:
     image: rabbitmq:4-management
-    container_name: rabbitmq
+    container_name: rabbitmq-uenf
     restart: unless-stopped
     ports:
       - "5672:5672"
@@ -10,16 +10,16 @@ services:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: senha_segura
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq-uenf-data:/var/lib/rabbitmq
       - rabbitmq_log:/var/log/rabbitmq
 
   postgres:
     image: postgres:16
-    container_name: postgres_db
+    container_name: postgres-uenf
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: mydatabase
     ports:
       - "5432:5432"
@@ -28,7 +28,7 @@ services:
 
   redis:
     image: redis:8-alpine
-    container_name: redis-8
+    container_name: redis-uenf
     ports:
       - "6379:6379"
     volumes:
@@ -38,8 +38,14 @@ services:
 
   rustfs:
     image: rustfs:latest
-    container_name: rustfs
+    container_name: rustfs-uenf
     restart: unless-stopped
+    environment:
+      RUSTFS_ACCESS_KEY: user
+      RUSTFS_SECRET_KEY: password
+    ports:
+      - "9000:9000"
+      - "9001:9001"
 
 volumes:
   rabbitmq_data:
