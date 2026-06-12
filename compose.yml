@@ -1,6 +1,6 @@
 services:
   rabbitmq:
-    image: rabbitmq:4-management
+    image: rabbitmq:4-management-alpine
     container_name: rabbitmq-uenf
     restart: unless-stopped
     ports:
@@ -11,10 +11,10 @@ services:
       RABBITMQ_DEFAULT_PASS: senha_segura
     volumes:
       - rabbitmq-uenf-data:/var/lib/rabbitmq
-      - rabbitmq_log:/var/log/rabbitmq
+      - rabbitmq-log:/var/log/rabbitmq
 
   postgres:
-    image: postgres:16
+    image: postgres:18-alpine
     container_name: postgres-uenf
     restart: always
     environment:
@@ -24,7 +24,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 
   redis:
     image: redis:8-alpine
@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
 
   rustfs:
-    image: rustfs:latest
+    image: rustfs/rustfs:latest
     container_name: rustfs-uenf
     restart: unless-stopped
     environment:
@@ -48,8 +48,7 @@ services:
       - "9001:9001"
 
 volumes:
-  rabbitmq_data:
-  rabbitmq_log:
-  postgres_data:
+  rabbitmq-uenf-data:
+  rabbitmq-log:
+  postgres-data:
   redis-data:
-    drver: local
